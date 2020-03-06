@@ -24,6 +24,13 @@ app.get('/stream', (request, response) => {
 
   stream.updateInit(action)
   stream.init(request, response)
+
+  const channelAction = {
+    type: 'ALL_CHANNELS',
+    payload: db.channels
+  }
+
+  stream.send(channelAction)
 })
 
 app.use(messageRouter)
