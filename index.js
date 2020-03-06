@@ -20,7 +20,12 @@ app.use(parser)
 const stream = new Sse()
 
 app.get('/stream', (request, response) => {
-  stream.updateInit(db.messages)
+  const action = {
+    type: 'ALL_MESSAGES',
+    payload: db.messages
+  }
+
+  stream.updateInit(action)
   stream.init(request, response)
 })
 
@@ -33,8 +38,12 @@ app.post(
 
     response.send(text)
 
-    stream.send(text)
-    console.log('db test:', db)
+    const action = {
+      type: 'NEW_MESSAGE',
+      payload: text
+    }
+
+    stream.send(action)
   }
 )
 
