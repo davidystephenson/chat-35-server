@@ -1,5 +1,6 @@
 const express = require('express')
 const Sse = require('json-sse')
+const cors = require('cors')
 
 const app = express()
 
@@ -8,6 +9,10 @@ const port = 4000
 const db = {}
 
 db.messages = []
+
+const corsMiddleware = cors()
+app.use(corsMiddleware)
+// app.use(cors())
 
 const parser = express.json()
 app.use(parser)
