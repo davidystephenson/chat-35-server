@@ -1,4 +1,5 @@
 const express = require('express')
+const Sse = require('json-sse')
 
 const app = express()
 
@@ -11,6 +12,13 @@ db.messages = []
 const parser = express.json()
 app.use(parser)
 
+const stream = new Sse()
+
+app.get('/stream', (request, response) => {
+  stream.updateInit(db.messages)
+  stream.init(request, response)
+})
+
 app.post(
   '/message',
   (request, response) => {
@@ -20,6 +28,7 @@ app.post(
 
     response.send(text)
 
+    stream.send(text)
     console.log('db test:', db)
   }
 )
