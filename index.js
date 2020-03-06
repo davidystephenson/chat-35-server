@@ -17,13 +17,13 @@ const parser = express.json()
 app.use(parser)
 
 app.get('/stream', (request, response) => {
+  stream.init(request, response)
+
   const action = {
     type: 'ALL_MESSAGES',
     payload: db.messages
   }
-
-  stream.updateInit(action)
-  stream.init(request, response)
+  stream.send(action)
 
   const channelAction = {
     type: 'ALL_CHANNELS',
